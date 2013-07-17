@@ -1,0 +1,44 @@
+# Krypton 
+a super experimental ASCII cipher from the planet Krypton
+
+For general general help --> python krypton.py --help
+Use with caution. Not recommended for any serious work.
+
+As an effort to learn crypto BIG ideas:
+1. Confusion - Caesar cipher 
+2. Diffusion - Column transportation
+3. Secret only in the key - As obvious as it is
+http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html
+
+How encryption works:
+1. Diffuse the key - with a column transportation of state size 16
+2. Confuse the data with something similar to Caesar cipher with confusion in 
+   the size of original key length
+3. Then do an awesome XOR
++  To decrypt go in reverse order
+
+The testing:
+# In sample testing .enk for Encrypted files and .dek for decrypted files
+# Encrypt a simple ASCII text file
+python krypton.py -i test.in -o test.enk -k apple
+# -D option to Turn on the Decryption mode 
+python krypton.py -D -i test.enk -o test.dek -k apple
+
+# -B option to Encrypt a binary file
+# Encrypted file will be double the size of original file
+python krypton.py -B -i debian.torrent -o debian.enk -k"apple!booz"
+#  -B -D options to Turn on the Decryption mode with binary file
+python krypton.py -B -D -i debian.enk -o debian.dek -k"apple!booz"
+
+# DIFF
+diff test.dek test.in
+diff debian.dek debian.torrent -b
+
+=====TEST======
+python krypton.py -i test.in -o test.enk -k apple
+python krypton.py -D -i test.enk -o test.dek -k apple
+diff test.dek test.in
+
+python krypton.py -B -i debian.torrent -o debian.enk -k"apple!booz"
+python krypton.py -B -D -i debian.enk -o debian.dek -k"apple!booz"
+diff debian.dek debian.torrent -b
